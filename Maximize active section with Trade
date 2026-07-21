@@ -1,0 +1,30 @@
+class Solution {
+    public int maxActiveSectionsAfterTrade(String s) {
+        int n = s.length();
+
+        // Step 1: Count total 1s
+        int totalOnes = 0;
+        for (char c : s.toCharArray()) {
+            if (c == '1') totalOnes++;
+        }
+
+        // Step 2: Create gain array
+        // '0' -> +1, '1' -> -1
+        int[] gain = new int[n];
+        for (int i = 0; i < n; i++) {
+            gain[i] = (s.charAt(i) == '0') ? 1 : -1;
+        }
+
+        // Step 3: Kadane’s Algorithm
+        int maxGain = 0;
+        int curr = 0;
+
+        for (int i = 0; i < n; i++) {
+            curr = Math.max(gain[i], curr + gain[i]);
+            maxGain = Math.max(maxGain, curr);
+        }
+
+        // Step 4: Final answer
+        return totalOnes + maxGain;
+    }
+}
