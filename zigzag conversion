@@ -1,0 +1,41 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    public String convert(String s, int numRows) {
+        // Edge cases: No rearrangement needed if only 1 row or string fits in rows
+        if (numRows == 1 || numRows >= s.length()) {
+            return s;
+        }
+
+        // Initialize rows as StringBuilders
+        List<StringBuilder> rows = new ArrayList<>();
+        for (int i = 0; i < Math.min(numRows, s.length()); i++) {
+            rows.add(new StringBuilder());
+        }
+
+        int currRow = 0;
+        boolean goingDown = false;
+
+        // Process each character in the string
+        for (char c : s.toCharArray()) {
+            rows.get(currRow).append(c);
+            
+            // Reverse the direction when hitting top or bottom boundary
+            if (currRow == 0 || currRow == numRows - 1) {
+                goingDown = !goingDown;
+            }
+            
+            // Move to the next row based on direction
+            currRow += goingDown ? 1 : -1;
+        }
+
+        // Merge all row string builders into the final answer
+        StringBuilder result = new StringBuilder();
+        for (StringBuilder row : rows) {
+            result.append(row);
+        }
+
+        return result.toString();
+    }
+}
